@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dashboard</class>
+ <widget class="QWidget" name="dashboardPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>640</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="dashboardLayout">
+   <property name="leftMargin">
+    <number>36</number>
+   </property>
+   <property name="topMargin">
+    <number>36</number>
+   </property>
+   <property name="rightMargin">
+    <number>36</number>
+   </property>
+   <property name="bottomMargin">
+    <number>36</number>
+   </property>
+   <property name="spacing">
+    <number>20</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="brandLabel">
+     <property name="text">
+      <string>핏틈</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="greetingLabel">
+     <property name="text">
+      <string>안녕하세요</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="conditionDetailLabel">
+     <property name="text">
+      <string>컨디션 점수/부위별 피로도 정보 없음</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="role" stdset="0">
+      <string>muted</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="statsLayout">
+     <property name="spacing">
+      <number>12</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="cardFrame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <layout class="QVBoxLayout" name="streakCardLayout">
+        <property name="leftMargin"><number>18</number></property>
+        <property name="topMargin"><number>16</number></property>
+        <property name="rightMargin"><number>18</number></property>
+        <property name="bottomMargin"><number>16</number></property>
+        <property name="spacing"><number>6</number></property>
+        <item>
+         <widget class="QLabel" name="streakCaptionLabel">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="text">
+           <string>연속 운동일</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>muted</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="streakLabel">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="text">
+           <string>0일</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>metric</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="cardFrame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <layout class="QVBoxLayout" name="completionCardLayout">
+        <property name="leftMargin"><number>18</number></property>
+        <property name="topMargin"><number>16</number></property>
+        <property name="rightMargin"><number>18</number></property>
+        <property name="bottomMargin"><number>16</number></property>
+        <property name="spacing"><number>6</number></property>
+        <item>
+         <widget class="QLabel" name="completionCaptionLabel">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="text">
+           <string>7일 완료율</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>muted</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="completionRateLabel">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="text">
+           <string>0%</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>metric</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="cardFrame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <layout class="QVBoxLayout" name="conditionCardLayout">
+        <property name="leftMargin"><number>18</number></property>
+        <property name="topMargin"><number>16</number></property>
+        <property name="rightMargin"><number>18</number></property>
+        <property name="bottomMargin"><number>16</number></property>
+        <property name="spacing"><number>6</number></property>
+        <item>
+         <widget class="QLabel" name="conditionCaptionLabel">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="text">
+           <string>오늘 컨디션</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>muted</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="conditionStatusLabel">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="text">
+           <string>미입력</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>metric</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="cardFrame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <layout class="QHBoxLayout" name="routineRequestLayout">
+      <property name="leftMargin"><number>18</number></property>
+      <property name="topMargin"><number>14</number></property>
+      <property name="rightMargin"><number>18</number></property>
+      <property name="bottomMargin"><number>14</number></property>
+      <property name="spacing"><number>12</number></property>
+      <item>
+       <widget class="QLabel" name="routineAvailableMinutesLabel">
+        <property name="text">
+         <string>오늘 운동 가능 시간</string>
+        </property>
+        <property name="role" stdset="0">
+         <string>muted</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="routineRequestSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="routineAvailableMinutesEdit">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::UpDownArrows</enum>
+        </property>
+        <property name="minimum">
+         <number>3</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+        <property name="singleStep">
+         <number>1</number>
+        </property>
+        <property name="suffix">
+         <string>분</string>
+        </property>
+        <property name="value">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="startWorkoutButton">
+     <property name="minimumHeight">
+      <number>68</number>
+     </property>
+     <property name="text">
+      <string>오늘 운동 시작</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="actionBarFrame">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <layout class="QHBoxLayout" name="actionsLayout">
+      <property name="leftMargin"><number>0</number></property>
+      <property name="topMargin"><number>0</number></property>
+      <property name="rightMargin"><number>0</number></property>
+      <property name="bottomMargin"><number>0</number></property>
+      <property name="spacing"><number>10</number></property>
+      <item>
+       <widget class="QPushButton" name="historyButton">
+        <property name="text">
+         <string>기록 보기</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="conditionButton">
+        <property name="text">
+         <string>컨디션 입력</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="profileButton">
+        <property name="text">
+         <string>프로필 수정</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="dashboardSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

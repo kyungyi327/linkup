@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ProfileEdit</class>
+ <widget class="QWidget" name="profileEditPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>640</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="profileLayout">
+   <property name="leftMargin"><number>36</number></property>
+   <property name="topMargin"><number>32</number></property>
+   <property name="rightMargin"><number>36</number></property>
+   <property name="bottomMargin"><number>32</number></property>
+   <property name="spacing"><number>18</number></property>
+   <item><widget class="QLabel" name="titleLabel"><property name="text"><string>프로필 설정</string></property></widget></item>
+   <item>
+    <widget class="QFrame" name="cardFrame">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <layout class="QGridLayout" name="profileGrid">
+      <property name="leftMargin"><number>32</number></property>
+      <property name="topMargin"><number>28</number></property>
+      <property name="rightMargin"><number>32</number></property>
+      <property name="bottomMargin"><number>28</number></property>
+      <property name="horizontalSpacing"><number>24</number></property>
+      <property name="verticalSpacing"><number>18</number></property>
+      <item row="0" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter"><widget class="QLabel" name="sectionLabel"><property name="minimumWidth"><number>136</number></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property><property name="text"><string>닉네임</string></property></widget></item>
+      <item row="0" column="1"><widget class="QLineEdit" name="nicknameEdit"><property name="minimumHeight"><number>44</number></property></widget></item>
+      <item row="1" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter"><widget class="QLabel" name="sectionLabel"><property name="minimumWidth"><number>136</number></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property><property name="text"><string>성별</string></property></widget></item>
+      <item row="1" column="1"><layout class="QHBoxLayout" name="genderLayout"><property name="spacing"><number>8</number></property><item><widget class="QPushButton" name="genderOption_male"><property name="text"><string>남</string></property><property name="checkable"><bool>true</bool></property><property name="chip" stdset="0"><bool>true</bool></property></widget></item><item><widget class="QPushButton" name="genderOption_female"><property name="text"><string>여</string></property><property name="checkable"><bool>true</bool></property><property name="chip" stdset="0"><bool>true</bool></property></widget></item><item><spacer name="genderSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout></item>
+      <item row="2" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter"><widget class="QLabel" name="sectionLabel"><property name="minimumWidth"><number>136</number></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property><property name="text"><string>출생연도</string></property></widget></item>
+      <item row="2" column="1"><widget class="QSpinBox" name="birthYearEdit"><property name="buttonSymbols"><enum>QAbstractSpinBox::UpDownArrows</enum></property><property name="minimum"><number>1900</number></property><property name="maximum"><number>2026</number></property><property name="value"><number>2002</number></property></widget></item>
+      <item row="3" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter"><widget class="QLabel" name="sectionLabel"><property name="minimumWidth"><number>136</number></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property><property name="text"><string>키</string></property></widget></item>
+      <item row="3" column="1"><widget class="QSpinBox" name="heightEdit"><property name="buttonSymbols"><enum>QAbstractSpinBox::UpDownArrows</enum></property><property name="minimum"><number>100</number></property><property name="maximum"><number>230</number></property><property name="suffix"><string>cm</string></property></widget></item>
+      <item row="4" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter"><widget class="QLabel" name="sectionLabel"><property name="minimumWidth"><number>136</number></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property><property name="text"><string>몸무게</string></property></widget></item>
+      <item row="4" column="1"><widget class="QSpinBox" name="weightEdit"><property name="buttonSymbols"><enum>QAbstractSpinBox::UpDownArrows</enum></property><property name="minimum"><number>30</number></property><property name="maximum"><number>200</number></property><property name="suffix"><string>kg</string></property></widget></item>
+      <item row="5" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter"><widget class="QLabel" name="sectionLabel"><property name="minimumWidth"><number>136</number></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property><property name="text"><string>통증 부위</string></property></widget></item>
+      <item row="5" column="1"><layout class="QHBoxLayout" name="painLayout"><property name="spacing"><number>8</number></property><item><widget class="QPushButton" name="pain목Check"><property name="text"><string>목</string></property><property name="checkable"><bool>true</bool></property><property name="chip" stdset="0"><bool>true</bool></property></widget></item><item><widget class="QPushButton" name="pain어깨Check"><property name="text"><string>어깨</string></property><property name="checkable"><bool>true</bool></property><property name="chip" stdset="0"><bool>true</bool></property></widget></item><item><widget class="QPushButton" name="pain허리Check"><property name="text"><string>허리</string></property><property name="checkable"><bool>true</bool></property><property name="chip" stdset="0"><bool>true</bool></property></widget></item><item><widget class="QPushButton" name="pain손목Check"><property name="text"><string>손목</string></property><property name="checkable"><bool>true</bool></property><property name="chip" stdset="0"><bool>true</bool></property></widget></item><item><widget class="QPushButton" name="pain무릎Check"><property name="text"><string>무릎</string></property><property name="checkable"><bool>true</bool></property><property name="chip" stdset="0"><bool>true</bool></property></widget></item><item><widget class="QPushButton" name="pain발목Check"><property name="text"><string>발목</string></property><property name="checkable"><bool>true</bool></property><property name="chip" stdset="0"><bool>true</bool></property></widget></item><item><spacer name="painSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout></item>
+      <item row="6" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter"><widget class="QLabel" name="sectionLabel"><property name="minimumWidth"><number>136</number></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property><property name="text"><string>푸쉬업 최대 반복</string></property></widget></item>
+      <item row="6" column="1"><widget class="QSpinBox" name="pushupMaxEdit"><property name="buttonSymbols"><enum>QAbstractSpinBox::UpDownArrows</enum></property><property name="minimum"><number>0</number></property><property name="maximum"><number>300</number></property><property name="suffix"><string>회</string></property></widget></item>
+      <item row="7" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter"><widget class="QLabel" name="sectionLabel"><property name="minimumWidth"><number>136</number></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property><property name="text"><string>플랭크 최대 유지</string></property></widget></item>
+      <item row="7" column="1"><widget class="QSpinBox" name="plankMaxSecEdit"><property name="buttonSymbols"><enum>QAbstractSpinBox::UpDownArrows</enum></property><property name="minimum"><number>0</number></property><property name="maximum"><number>1800</number></property><property name="suffix"><string>초</string></property></widget></item>
+      <item row="8" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter"><widget class="QLabel" name="sectionLabel"><property name="minimumWidth"><number>136</number></property><property name="alignment"><set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set></property><property name="text"><string>스쿼트 최대 반복</string></property></widget></item>
+      <item row="8" column="1"><widget class="QSpinBox" name="squatMaxEdit"><property name="buttonSymbols"><enum>QAbstractSpinBox::UpDownArrows</enum></property><property name="minimum"><number>0</number></property><property name="maximum"><number>500</number></property><property name="suffix"><string>회</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item><spacer name="profileSpacer"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>24</height></size></property></spacer></item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonLayout">
+     <item><spacer name="buttonSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
+     <item><widget class="QPushButton" name="cancelButton"><property name="minimumWidth"><number>140</number></property><property name="text"><string>취소</string></property></widget></item>
+     <item><widget class="QPushButton" name="saveButton"><property name="minimumWidth"><number>180</number></property><property name="text"><string>저장</string></property></widget></item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

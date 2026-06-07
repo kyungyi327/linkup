@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>History</class>
+ <widget class="QWidget" name="historyPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>640</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="historyLayout">
+   <property name="leftMargin">
+    <number>36</number>
+   </property>
+   <property name="topMargin">
+    <number>32</number>
+   </property>
+   <property name="rightMargin">
+    <number>36</number>
+   </property>
+   <property name="bottomMargin">
+    <number>32</number>
+   </property>
+   <property name="spacing">
+    <number>18</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="headerLayout">
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="text">
+        <string>운동 기록</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="headerSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="backButton">
+       <property name="minimumWidth">
+        <number>120</number>
+       </property>
+       <property name="text">
+        <string>돌아가기</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="summaryLayout">
+     <property name="spacing">
+      <number>12</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="cardFrame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <layout class="QVBoxLayout" name="completionCardLayout">
+        <property name="leftMargin"><number>18</number></property>
+        <property name="topMargin"><number>16</number></property>
+        <property name="rightMargin"><number>18</number></property>
+        <property name="bottomMargin"><number>16</number></property>
+        <item>
+         <widget class="QLabel" name="completionRateCaptionLabel">
+          <property name="text">
+           <string>이번 주 완료율</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>muted</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="completionRateLabel">
+          <property name="text">
+           <string>0%</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>metric</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="cardFrame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <layout class="QVBoxLayout" name="streakCardLayout">
+        <property name="leftMargin"><number>18</number></property>
+        <property name="topMargin"><number>16</number></property>
+        <property name="rightMargin"><number>18</number></property>
+        <property name="bottomMargin"><number>16</number></property>
+        <item>
+         <widget class="QLabel" name="streakCaptionLabel">
+          <property name="text">
+           <string>연속 운동일</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>muted</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="streakLabel">
+          <property name="text">
+           <string>0일</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>metric</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="cardFrame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <layout class="QVBoxLayout" name="sessionsCardLayout">
+        <property name="leftMargin"><number>18</number></property>
+        <property name="topMargin"><number>16</number></property>
+        <property name="rightMargin"><number>18</number></property>
+        <property name="bottomMargin"><number>16</number></property>
+        <item>
+         <widget class="QLabel" name="totalSessionsCaptionLabel">
+          <property name="text">
+           <string>총 운동 횟수</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>muted</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="totalSessionsLabel">
+          <property name="text">
+           <string>0회</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>metric</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="cardFrame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <layout class="QVBoxLayout" name="hoursCardLayout">
+        <property name="leftMargin"><number>18</number></property>
+        <property name="topMargin"><number>16</number></property>
+        <property name="rightMargin"><number>18</number></property>
+        <property name="bottomMargin"><number>16</number></property>
+        <item>
+         <widget class="QLabel" name="totalHoursCaptionLabel">
+          <property name="text">
+           <string>총 운동 시간</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>muted</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="totalHoursLabel">
+          <property name="text">
+           <string>0h</string>
+          </property>
+          <property name="role" stdset="0">
+           <string>metric</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="cardFrame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <layout class="QVBoxLayout" name="tableCardLayout">
+      <property name="leftMargin">
+       <number>18</number>
+      </property>
+      <property name="topMargin">
+       <number>18</number>
+      </property>
+      <property name="rightMargin">
+       <number>18</number>
+      </property>
+      <property name="bottomMargin">
+       <number>18</number>
+      </property>
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="sectionLabel">
+        <property name="text">
+         <string>최근 세션</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="historyTable">
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <property name="showGrid">
+         <bool>false</bool>
+        </property>
+        <property name="rowCount">
+         <number>0</number>
+        </property>
+        <property name="columnCount">
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RoutinePreview</class>
+ <widget class="QWidget" name="RoutinePreview">
+  <layout class="QVBoxLayout" name="layout">
+   <property name="contentsMargins"><number>36</number><number>36</number><number>36</number><number>36</number></property>
+   <property name="spacing"><number>16</number></property>
+   <item><widget class="QLabel" name="titleLabel"><property name="text"><string>오늘의 루틴</string></property></widget></item>
+   <item><widget class="QLabel" name="summaryLabel"><property name="text"><string>예상 소요 시간</string></property></widget></item>
+   <item><widget class="QListWidget" name="routineList"><property name="alternatingRowColors"><bool>true</bool></property><property name="spacing"><number>6</number></property></widget></item>
+   <item><layout class="QHBoxLayout" name="actionsLayout"><item><widget class="QPushButton" name="backButton"><property name="text"><string>← 뒤로</string></property></widget></item><item><widget class="QPushButton" name="startButton"><property name="text"><string>운동 시작</string></property></widget></item></layout></item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
