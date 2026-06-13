@@ -2,7 +2,7 @@
 
 default: run
 
-run: check
+run:
 	uv run main.py
 
 check: lint verify
