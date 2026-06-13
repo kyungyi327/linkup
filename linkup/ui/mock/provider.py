@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from linkup.data.interfaces import (
+from linkup.ui.port import (
     DailyLog,
     DataProvider,
     Exercise,

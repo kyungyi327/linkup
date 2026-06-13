@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
-from linkup.data.interfaces import Exercise, Routine
+if TYPE_CHECKING:
+    from linkup.ui.port import Exercise, Routine
 
 
 @dataclass(frozen=True)

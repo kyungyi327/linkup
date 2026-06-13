@@ -4,8 +4,9 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
-from linkup.data.mock_provider import MockDataProvider
-from linkup.ui.app import AppViewModel, create_main_window
+from linkup.ui.app import create_main_window
+from linkup.ui.mock import MockDataProvider
+from linkup.ui.view_model import AppViewModel
 
 
 def main() -> None:

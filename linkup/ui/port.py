@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from abc import abstractmethod
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -67,34 +68,54 @@ class SessionRecord:
 
 
 class DataCollectionPort(Protocol):
+    """외부 데이터 수집/저장 구현체가 제공해야 하는 사용자 입력 port."""
+
+    @abstractmethod
     def has_user_profile(self) -> bool: ...
 
+    @abstractmethod
     def get_user_profile(self) -> UserProfile: ...
 
+    @abstractmethod
     def save_user_profile(self, profile: UserProfile) -> None: ...
 
+    @abstractmethod
     def get_today_log(self) -> DailyLog | None: ...
 
+    @abstractmethod
     def upsert_today_log(self, log: DailyLog) -> None: ...
 
 
 class ExerciseContentPort(Protocol):
+    """외부 운동 콘텐츠 구현체가 제공해야 하는 port."""
+
+    @abstractmethod
     def get_modified_exercise(self, ex_id: str) -> Exercise: ...
 
 
 class AnalysisPort(Protocol):
+    """외부 분석/추천 구현체가 제공해야 하는 port."""
+
+    @abstractmethod
     def generate_routine(self, available_min: int) -> Routine: ...
 
+    @abstractmethod
     def get_recent_stats(self) -> RecentStats: ...
 
+    @abstractmethod
     def get_session_list(self) -> list[SessionRecord]: ...
 
 
 class SessionRecordPort(Protocol):
+    """외부 운동 세션 기록 구현체가 제공해야 하는 port."""
+
+    @abstractmethod
     def start_session(self, routine: Routine) -> str: ...
 
+    @abstractmethod
     def record_history(self, session_id: str, ex_id: str, completed: bool) -> None: ...
 
+    @abstractmethod
     def end_session(
         self, session_id: str, difficulty: str, pain: str, memo: str
     ) -> SessionSummary: ...
@@ -107,4 +128,6 @@ class DataProvider(
     SessionRecordPort,
     Protocol,
 ):
+    """UI가 의존하는 전체 외부 provider 계약."""
+
     pass
