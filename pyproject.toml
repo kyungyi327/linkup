@@ -11,4 +11,4 @@ dev = ["ruff>=0.15.15"]
 
 
 [tool.ruff.lint]
-select = ["F", "E", "W", "I", "UP", "B", "ANN"]
+select = ["F", "E", "W", "I", "UP", "B", "ANN", "TC"]
