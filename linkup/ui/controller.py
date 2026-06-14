@@ -33,7 +33,7 @@ from linkup.ui.constants import (
     CURRENT_YEAR,
     PAIN_OPTIONS,
 )
-from linkup.ui.forms import load_form
+from linkup.ui.form_loader import load_form
 from linkup.ui.state import (
     DailyLogState,
     DashboardState,
