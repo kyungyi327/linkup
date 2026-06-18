@@ -15,7 +15,7 @@ from linkup.db.constants import (
 )
 from linkup.db.models import (
     UserProfile, ExerciseLibraryItem, DailyLog,
-    WorkoutSession, WorkoutHistory, AppSetting,
+    WorkoutSession, WorkoutHistory,
 )
 
 
@@ -28,8 +28,14 @@ def _enum_or_none(enum_cls, value):
 
 
 def _enum_list(enum_cls, csv: Optional[str]) -> list:
-    """CSV TEXT 를 Enum 리스트로."""
-    return [enum_cls(v) for v in parse_csv(csv or "")]
+    """CSV TEXT 를 Enum 리스트로. 알 수 없는 토큰은 무시 (행 전체 로드 실패 방지)."""
+    out = []
+    for v in parse_csv(csv or ""):
+        try:
+            out.append(enum_cls(v))
+        except ValueError:
+            pass
+    return out
 
 
 def _enum_csv(items) -> str:
@@ -177,10 +183,3 @@ def row_to_history(r) -> WorkoutHistory:
         pain_during=_enum_list(BodyPart, r["pain_during"]),
         status=SessionStatus(r["status"]),
     )
-
-
-# ------------------------------------------------------------------
-# App_Settings
-# ------------------------------------------------------------------
-def row_to_app_setting(r) -> AppSetting:
-    return AppSetting(key=r["key"], value=r["value"])

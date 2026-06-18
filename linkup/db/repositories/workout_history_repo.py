@@ -36,6 +36,7 @@ class WorkoutHistoryRepo:
                 ),
             )
             conn.commit()
+            assert cur.lastrowid is not None  # INSERT 직후라 항상 존재
             return cur.lastrowid
 
     def update_status(self,

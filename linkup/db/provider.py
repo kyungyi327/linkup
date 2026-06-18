@@ -28,8 +28,7 @@ from linkup.db import constants as C
 # ------------------------------------------------------------------
 # 변환 헬퍼
 # ------------------------------------------------------------------
-_DIFF_TO_INTENSITY = {1: "낮음", 2: "보통", 3: "높음"}
-_INTENSITY_TO_DIFF = {v: k for k, v in _DIFF_TO_INTENSITY.items()}
+_DIFF_TO_INTENSITY = C.DIFFICULTY_LABELS_KO  # {1:"낮음",2:"보통",3:"높음"} 단일 소스
 
 
 def _today() -> str:
@@ -41,17 +40,21 @@ def _now_hms() -> str:
 
 
 def _duration_text(item: models.ExerciseLibraryItem) -> str:
-    """DB 의 sets/reps/duration_sec 를 UI 표시용 텍스트로."""
+    """DB 의 sets/reps/duration_sec 를 UI 표시용 텍스트로. sets=1 이면 'xN' 생략."""
+    sets = item.default_sets or 1
+    suffix = f" x{sets}" if sets > 1 else ""
     if item.default_reps and item.default_reps > 1:
-        return f"{item.default_reps}회x{item.default_sets}"
-    return f"{item.duration_sec}초x{item.default_sets}"
+        return f"{item.default_reps}회{suffix}"
+    return f"{item.duration_sec}초{suffix}"
 
 
 def _exercise_to_port(item: models.ExerciseLibraryItem, guide: str = "") -> port.Exercise:
     return port.Exercise(
         ex_id=item.ex_id,
         name=item.name,
-        target_muscle=", ".join(item.target_muscle),
+        target_muscle=", ".join(
+            C.TARGET_MUSCLE_LABELS_KO.get(m, m) for m in item.target_muscle
+        ),
         duration_text=_duration_text(item),
         intensity=_DIFF_TO_INTENSITY.get(item.difficulty_level, "보통"),
         guide=guide or (item.description or ""),
@@ -84,7 +87,8 @@ class SqliteDataProvider(port.DataProvider):
 
     def get_user_profile(self) -> port.UserProfile:
         p = self._user.get()
-        assert p is not None
+        if p is None:
+            raise RuntimeError("user profile row missing (id=1)")
         return port.UserProfile(
             nickname=p.nickname or "",
             birth_year=p.birth_year,
@@ -139,7 +143,8 @@ class SqliteDataProvider(port.DataProvider):
     def get_modified_exercise(self, ex_id: str) -> port.Exercise:
         # 더 쉬운 대체 동작이 없으면(modified_ex_id 미설정) 원본 동작을 그대로 반환.
         item = self._lib.get_modified(ex_id) or self._lib.get(ex_id)
-        assert item is not None
+        if item is None:
+            raise KeyError(f"unknown ex_id: {ex_id}")
         return _exercise_to_port(item)
 
     # ---------- AnalysisPort ----------
@@ -162,6 +167,7 @@ class SqliteDataProvider(port.DataProvider):
         )
 
     def get_session_list(self) -> list[port.SessionRecord]:
+        # 일별 집계(GROUP BY date)라 세션 단위 난이도/통증/메모는 표현 불가 → 빈값
         out: list[port.SessionRecord] = []
         for d in self._stats.daily_history(50):
             out.append(port.SessionRecord(

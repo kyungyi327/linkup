@@ -8,7 +8,9 @@ All team members MUST reference this single file.
 - Database: TEXT columns store these exact string values.
 
 Usage:
-    from constants import BodyPart, ExerciseCategory, Scene, JobType, Goal, SessionStatus
+    from linkup.db.constants import (
+        BodyPart, ExerciseCategory, Scene, Gender, JobType, Goal, SessionStatus,
+    )
 
     # Validate user input
     assert "neck" in BodyPart.values()
@@ -16,8 +18,6 @@ Usage:
     # Iterate for UI dropdowns
     for part in BodyPart:
         print(part.value, part.label_ko)
-
-See docs/CHANGELOG_KOR.md for change history.
 """
 
 from enum import Enum
@@ -127,6 +127,20 @@ class SessionStatus(LabeledEnum):
 DIFFICULTY_MIN = 1
 DIFFICULTY_MAX = 3
 DIFFICULTY_LABELS_KO = {1: "낮음", 2: "보통", 3: "높음"}
+
+# 운동 데이터(target_muscle) 영문 부위 → 한글 표시 라벨. 미지값은 원문 fallback.
+TARGET_MUSCLE_LABELS_KO = {
+    "neck": "목",
+    "shoulders": "어깨",
+    "back": "등",
+    "waist": "허리/코어",
+    "chest": "가슴",
+    "upper arms": "상완",
+    "lower arms": "하완",
+    "upper legs": "허벅지",
+    "lower legs": "종아리",
+    "cardio": "유산소",
+}
 
 # mental_condition_score (수면+기분+스트레스 통합 점수)
 MENTAL_CONDITION_MIN = 0

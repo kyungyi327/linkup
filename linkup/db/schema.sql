@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS Daily_Log (
 
 -- ============================================================
 -- 4. Workout_Session
---    One complete workout experience (a set of exercises).
+--    One row per chunk (3~10 min unit, accumulated per day).
 -- ============================================================
 CREATE TABLE IF NOT EXISTS Workout_Session (
     session_id       INTEGER PRIMARY KEY AUTOINCREMENT,
