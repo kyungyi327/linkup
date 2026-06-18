@@ -2,77 +2,95 @@ from pathlib import Path
 import pandas as pd
 
 def process_fitteum_csv(input_csv_path, output_csv_path):
-    """
-    비어있는 secondaryMuscles 컬럼이 있어도 데이터가 밀리지 않도록
-    안전장치를 대폭 강화한 최종 정제 함수
-    """
-    print(f"📖 1. 데이터 불러오는 중: {input_csv_path}")
+
     try:
         df = pd.read_csv(input_csv_path)
     except FileNotFoundError:
-        print(f"❌ 에러: 파일을 찾을 수 없습니다. 경로와 파일명을 다시 확인해 주세요.")
+        print(f"에러: 파일을 찾을 수 없습니다. 경로와 파일명을 다시 확인해 주세요.")
         return None
 
-    # 🛑 1. 기구 필터링 (equipment가 'body weight'인 것만 추출)
+    # 1. 기구 필터링 (equipment가 'body weight'인 것만 추출)
     if 'equipment' in df.columns:
         bodyweight_df = df[df['equipment'].astype(str).str.lower().str.strip() == 'body weight'].copy()
     else:
-        print("❌ 에러: 데이터에 'equipment' 컬럼이 존재하지 않습니다.")
+        print("에러: 데이터에 'equipment' 컬럼이 존재하지 않습니다.")
         return None
 
-    print(f"🔍 맨몸 운동(body weight) 필터링 후 개수: {len(bodyweight_df)}개")
+    # 2. 고유 동작 ID 부여
+    bodyweight_df['ex_id'] = range(1, len(bodyweight_df) + 1)
 
-    # 🏷️ 2. 운동 강도(intensity) 자동 분류 함수
-    def assign_intensity(row):
+    # ⏱3. 디폴트 운동 시간 20초 부여
+    bodyweight_df['duration_sec'] = 20
+
+    # 4. 분산된 운동 방법(instructions) 컬럼 하나로 병합
+    instruction_cols = [col for col in bodyweight_df.columns if 'instruction' in col.lower()]
+    
+    def merge_instructions(row):
+        steps = [str(row[col]).strip() for col in instruction_cols if pd.notna(row[col]) and str(row[col]).strip() != ""]
+        return " ".join(steps) if steps else ""
+
+    bodyweight_df['instructions'] = bodyweight_df.apply(merge_instructions, axis=1)
+
+    # 5. 운동 카테고리/난이도 자동 마이닝 함수
+    def analyze_exercise_details(row):
         name_str = str(row.get('name', '')).lower()
-        instruction_cols = [col for col in row.index if 'instruction' in col]
-        instruction_str = " ".join([str(row[col]) for col in instruction_cols if pd.notna(row[col])]).lower()
+        inst_str = str(row.get('instructions', '')).lower()
+        search_text = name_str + " " + inst_str
         
-        search_text = name_str + " " + instruction_str
-        
-        if any(word in search_text for word in ['jump', 'chin-up', 'pull-up', 'single-leg', 'single leg', 'inverted', 'handstand', 'plyometrics', 'advanced', 'explosive']):
-            return '고급'
-        elif any(word in search_text for word in ['stretch', 'stretching', 'lie', 'lying', 'hold', 'passive', 'flexibility', 'warm-up', 'easy']):
-            return '초급'
+        # A. category 분류 (스트레칭 / 유산소 / 근력)
+        if any(word in search_text for word in ['cardio', 'jump', 'run', 'burpee', 'jacks', 'rope']):
+            category = '유산소'
+        elif any(word in search_text for word in ['stretch', 'stretching', 'yoga', 'flexibility', 'warm-up']):
+            category = '스트레칭'
         else:
-            return '중급'
+            category = '근력'
+            
+        # B. difficulty_level 결정 (초급=1, 중급=2,
+        if any(word in search_text for word in ['jump', 'chin-up', 'pull-up', 'single-leg', 'single leg', 'inverted', 'handstand', 'plyometrics', 'advanced', 'explosive']):
+            difficulty_level = 3
+        elif any(word in search_text for word in ['stretch', 'stretching', 'lie', 'lying', 'hold', 'passive', 'easy']):
+            difficulty_level = 1
+        else:
+            difficulty_level = 2
+            
+        return pd.Series([category, difficulty_level])
 
-    # 강도 레이블링 적용
-    bodyweight_df['intensity'] = bodyweight_df.apply(assign_intensity, axis=1)
+    # 카테고리와 난이도(숫자형) 적용
+    bodyweight_df[['category', 'difficulty_level']] = bodyweight_df.apply(analyze_exercise_details, axis=1)
 
-    # 🎯 [핵심 수정: 빈칸 방어 절차]
-    # 요청하신 컬럼 리스트 정의
+    # 6. 금기 부위(contraindications) 데이터 매핑 (답변사항 2번 반영)
+    # target 데이터를 금기 부위 데이터로 활용
+    if 'target' in bodyweight_df.columns:
+        bodyweight_df['contraindications'] = bodyweight_df['target']
+    else:
+        bodyweight_df['contraindications'] = bodyweight_df['bodyPart'] if 'bodyPart' in bodyweight_df.columns else ""
+
+    # 7. 최종 전송용 테이블 규격 및 순서 정의
     requested_columns = [
-        'bodyPart', 
-        'name', 
-        'gifUrl', 
-        'target', 
-        'secondaryMuscles/0', 
-        'secondaryMuscles/1', 
-        'intensity'
+        'ex_id',               # 고유 ID
+        'name',                # 운동 이름
+        'category',            # 운동 분류 (근력/유산소/스트레칭)
+        'difficulty_level',    # 난이도 (1, 2, 3)
+        'duration_sec',        # 디폴트 시간 (20)
+        'contraindications',   # 금기 부위 (target 연동)
+        'gifUrl',              # 이미지 URL
+        'bodyPart',            # 운동 부위 
+        'secondaryMuscles',    # 보조 근육
+        'instructions'         # 운동 방법
     ]
     
-    # 엑셀 원본에 해당 컬럼이 없거나 비어있으면 강제로 공백 문자열("")을 주입하여 자리 밀림 방지
     for col in requested_columns:
         if col not in bodyweight_df.columns:
             bodyweight_df[col] = ""
         else:
-            # 존재한다면 결측치(NaN)를 전부 빈 문자열("")로 치환합니다.
             bodyweight_df[col] = bodyweight_df[col].fillna("")
 
-    # 💾 지정한 순서대로 컬럼을 딱 고정해서 CSV로 내보내기
     bodyweight_df[requested_columns].to_csv(output_csv_path, index=False, encoding='utf-8-sig')
-    print(f"✨ 데이터 정렬 및 자동 레이블링 완료!")
-    print(f"💾 최종 완성 파일 경로: {output_csv_path}")
     
     return bodyweight_df[requested_columns]
 
-
-# ==========================================
-# 실행 구역
-# ==========================================
 if __name__ == "__main__":
-    target_dir = Path("C:/workspace/Fitteum")
+    target_dir = Path("C:/workspace/linkup/linkup/data")
     
     input_file = target_dir / "exercises.csv"
     output_file = target_dir / "labeled_exercises.csv"
