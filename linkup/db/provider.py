@@ -137,7 +137,8 @@ class SqliteDataProvider(port.DataProvider):
 
     # ---------- ExerciseContentPort ----------
     def get_modified_exercise(self, ex_id: str) -> port.Exercise:
-        item = self._lib.get_modified(ex_id)
+        # 더 쉬운 대체 동작이 없으면(modified_ex_id 미설정) 원본 동작을 그대로 반환.
+        item = self._lib.get_modified(ex_id) or self._lib.get(ex_id)
         assert item is not None
         return _exercise_to_port(item)
 
@@ -204,7 +205,8 @@ class SqliteDataProvider(port.DataProvider):
         self, session_id: str, difficulty: str, pain: str, memo: str
     ) -> port.SessionSummary:
         sid = int(session_id)
-        fb = {"어려웠어요": -1, "적당해요": 0, "쉬웠어요": 1}.get(difficulty)
+        # UI 난이도 라벨 (view_model: 쉬웠어요/적당해요/힘들었어요) → 피드백 점수
+        fb = {"힘들었어요": -1, "적당해요": 0, "쉬웠어요": 1}.get(difficulty)
         self._session.end(sid, _now_hms(), overall_feedback=fb, memo=memo)
         sess = self._session.get(sid)
         hist = self._history.list_by_session(sid)
