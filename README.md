@@ -25,6 +25,7 @@ make check    # 포맷 검사, 린트, 테스트 실행
 make lint     # ruff lint 자동 수정
 make format   # ruff format 실행
 make test     # unittest 실행
+make coverage # unittest coverage 측정
 ```
 
 ## 구현 메모

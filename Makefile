@@ -31,6 +31,13 @@ lint:
 format:
 	$(UV_RUN) ruff format .
 
+.PHONY: coverage
+coverage:
+	$(UV_RUN) coverage erase
+	$(UV_RUN) coverage run --source=linkup -m unittest discover -s tests
+	$(UV_RUN) coverage report -m
+	$(UV_RUN) coverage html
+
 .PHONY: test
 test:
 	$(UV_RUN) python -m unittest discover -s tests
