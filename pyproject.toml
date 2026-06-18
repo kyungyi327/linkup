@@ -9,6 +9,8 @@ dependencies = ["pandas>=3.0.3", "pyside6>=6.11.1"]
 [dependency-groups]
 dev = ["pytest>=9.1.0", "pytest-cov>=7.1.0", "ruff>=0.15.18"]
 
+[tool.ruff]
+line-length = 120
 
 [tool.ruff.lint]
 select = ["F", "E", "W", "I", "UP", "B", "ANN", "TC"]
