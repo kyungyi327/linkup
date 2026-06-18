@@ -62,9 +62,7 @@ class StatsRepo:
 
             dates = [
                 r["date"]
-                for r in conn.execute(
-                    "SELECT DISTINCT date FROM Workout_Session ORDER BY date DESC"
-                ).fetchall()
+                for r in conn.execute("SELECT DISTINCT date FROM Workout_Session ORDER BY date DESC").fetchall()
             ]
         return RecentStats(
             active_days=active_days,

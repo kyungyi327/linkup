@@ -18,9 +18,7 @@ class ExerciseLibraryRepo:
 
     def get(self, ex_id: str) -> ExerciseLibraryItem | None:
         with get_connection(self._db_path) as conn:
-            row = conn.execute(
-                "SELECT * FROM Exercise_Library WHERE ex_id = ?", (ex_id,)
-            ).fetchone()
+            row = conn.execute("SELECT * FROM Exercise_Library WHERE ex_id = ?", (ex_id,)).fetchone()
         return row_to_exercise(row) if row else None
 
     def get_modified(self, ex_id: str) -> ExerciseLibraryItem | None:
@@ -38,9 +36,7 @@ class ExerciseLibraryRepo:
 
     def list_all(self) -> list[ExerciseLibraryItem]:
         with get_connection(self._db_path) as conn:
-            rows = conn.execute(
-                "SELECT * FROM Exercise_Library ORDER BY ex_id"
-            ).fetchall()
+            rows = conn.execute("SELECT * FROM Exercise_Library ORDER BY ex_id").fetchall()
         return [row_to_exercise(r) for r in rows]
 
     def query(

@@ -61,28 +61,14 @@ class AppWindowController(QObject):
         self.window = cast("QMainWindow", load_form("MainWindow.ui"))
         self._stack = self._find(self.window, QStackedWidget, "screenStack")
         self._screens = {
-            OnboardingState.screen_key: self._add_screen(
-                "Onboarding.ui", "onboardingPage"
-            ),
-            DashboardState.screen_key: self._add_screen(
-                "Dashboard.ui", "dashboardPage"
-            ),
+            OnboardingState.screen_key: self._add_screen("Onboarding.ui", "onboardingPage"),
+            DashboardState.screen_key: self._add_screen("Dashboard.ui", "dashboardPage"),
             DailyLogState.screen_key: self._add_screen("DailyLog.ui", "dailyLogPage"),
-            RoutineLoadingState.screen_key: self._add_screen(
-                "RoutineLoading.ui", "routineLoadingPage"
-            ),
-            RoutinePreviewState.screen_key: self._add_screen(
-                "RoutinePreview.ui", "routinePreviewPage"
-            ),
-            ExerciseExecutionState.screen_key: self._add_screen(
-                "ExerciseExecution.ui", "exerciseExecutionPage"
-            ),
-            SessionCompleteState.screen_key: self._add_screen(
-                "SessionComplete.ui", "completePage"
-            ),
-            ProfileEditState.screen_key: self._add_screen(
-                "ProfileEdit.ui", "profileEditPage"
-            ),
+            RoutineLoadingState.screen_key: self._add_screen("RoutineLoading.ui", "routineLoadingPage"),
+            RoutinePreviewState.screen_key: self._add_screen("RoutinePreview.ui", "routinePreviewPage"),
+            ExerciseExecutionState.screen_key: self._add_screen("ExerciseExecution.ui", "exerciseExecutionPage"),
+            SessionCompleteState.screen_key: self._add_screen("SessionComplete.ui", "completePage"),
+            ProfileEditState.screen_key: self._add_screen("ProfileEdit.ui", "profileEditPage"),
             HistoryState.screen_key: self._add_screen("History.ui", "historyPage"),
         }
         self._apply_stylesheet()
@@ -142,64 +128,36 @@ QDoubleSpinBox::down-arrow {{
 
     def _connect_actions(self) -> None:
         dashboard = self._screens[DashboardState.screen_key]
-        self._button(dashboard, "startWorkoutButton").clicked.connect(
-            self._begin_routine_load
-        )
-        self._button(dashboard, "historyButton").clicked.connect(
-            self._view_model.open_history
-        )
-        self._button(dashboard, "conditionButton").clicked.connect(
-            self._view_model.open_condition
-        )
-        self._button(dashboard, "profileButton").clicked.connect(
-            self._view_model.open_profile
-        )
+        self._button(dashboard, "startWorkoutButton").clicked.connect(self._begin_routine_load)
+        self._button(dashboard, "historyButton").clicked.connect(self._view_model.open_history)
+        self._button(dashboard, "conditionButton").clicked.connect(self._view_model.open_condition)
+        self._button(dashboard, "profileButton").clicked.connect(self._view_model.open_profile)
 
         daily_log = self._screens[DailyLogState.screen_key]
         self._button(daily_log, "saveButton").clicked.connect(self._save_condition)
-        self._button(daily_log, "cancelButton").clicked.connect(
-            self._view_model.cancel_condition
-        )
+        self._button(daily_log, "cancelButton").clicked.connect(self._view_model.cancel_condition)
 
         routine = self._screens[RoutinePreviewState.screen_key]
-        self._button(routine, "backButton").clicked.connect(
-            self._view_model.back_to_dashboard
-        )
-        self._button(routine, "startButton").clicked.connect(
-            self._view_model.start_session
-        )
+        self._button(routine, "backButton").clicked.connect(self._view_model.back_to_dashboard)
+        self._button(routine, "startButton").clicked.connect(self._view_model.start_session)
 
         exercise = self._screens[ExerciseExecutionState.screen_key]
-        self._button(exercise, "modifyButton").clicked.connect(
-            self._view_model.request_modified_exercise
-        )
-        self._button(exercise, "nextButton").clicked.connect(
-            self._view_model.complete_current_exercise
-        )
+        self._button(exercise, "modifyButton").clicked.connect(self._view_model.request_modified_exercise)
+        self._button(exercise, "nextButton").clicked.connect(self._view_model.complete_current_exercise)
 
         complete = self._screens[SessionCompleteState.screen_key]
         self._button(complete, "saveButton").clicked.connect(self._finish_session)
-        self._button(complete, "homeButton").clicked.connect(
-            self._view_model.back_to_dashboard
-        )
+        self._button(complete, "homeButton").clicked.connect(self._view_model.back_to_dashboard)
 
         profile = self._screens[ProfileEditState.screen_key]
-        self._button(profile, "saveButton").clicked.connect(
-            lambda: self._save_profile(profile)
-        )
-        self._button(profile, "cancelButton").clicked.connect(
-            self._view_model.back_to_dashboard
-        )
+        self._button(profile, "saveButton").clicked.connect(lambda: self._save_profile(profile))
+        self._button(profile, "cancelButton").clicked.connect(self._view_model.back_to_dashboard)
 
         onboarding = self._screens[OnboardingState.screen_key]
-        self._button(onboarding, "saveButton").clicked.connect(
-            lambda: self._save_profile(onboarding)
-        )
+        self._button(onboarding, "saveButton").clicked.connect(lambda: self._save_profile(onboarding))
 
         history = self._screens[HistoryState.screen_key]
-        self._button(history, "backButton").clicked.connect(
-            self._view_model.back_to_dashboard
-        )
+        self._button(history, "backButton").clicked.connect(self._view_model.back_to_dashboard)
 
     def _render_dashboard(self) -> None:
         page = self._screens[DashboardState.screen_key]
@@ -212,31 +170,21 @@ QDoubleSpinBox::down-arrow {{
         condition_button = self._button(page, "conditionButton")
         condition_button.setText(str(data["conditionButtonText"]))
         condition_button.setProperty("entered", data["conditionEntered"])
-        self._spin_box(page, "routineAvailableMinutesEdit").setValue(
-            int(data["routineAvailableMin"])
-        )
+        self._spin_box(page, "routineAvailableMinutesEdit").setValue(int(data["routineAvailableMin"]))
 
     def _begin_routine_load(self) -> None:
         page = self._screens[DashboardState.screen_key]
-        self._view_model.begin_routine_load(
-            self._spin_box(page, "routineAvailableMinutesEdit").value()
-        )
+        self._view_model.begin_routine_load(self._spin_box(page, "routineAvailableMinutesEdit").value())
         QTimer.singleShot(0, self._view_model.complete_routine_load)
 
     def _render_condition(self) -> None:
         page = self._screens[DailyLogState.screen_key]
         data = self._view_model.condition
-        self._set_checked_button(
-            page, "mentalConditionOption_", str(data["mentalConditionScore"])
-        )
-        self._double_spin_box(page, "outdoorHoursEdit").setValue(
-            float(str(data["outdoorHours"]))
-        )
+        self._set_checked_button(page, "mentalConditionOption_", str(data["mentalConditionScore"]))
+        self._double_spin_box(page, "outdoorHoursEdit").setValue(float(str(data["outdoorHours"])))
         fatigue_by_part = cast("dict[str, int]", data["fatigueByPart"])
         for part_key, prefix in self._fatigue_button_prefixes().items():
-            self._set_checked_button(
-                page, prefix, str(fatigue_by_part.get(part_key, 3))
-            )
+            self._set_checked_button(page, prefix, str(fatigue_by_part.get(part_key, 3)))
 
     def _render_loading(self) -> None:
         page = self._screens[RoutineLoadingState.screen_key]
@@ -250,10 +198,7 @@ QDoubleSpinBox::down-arrow {{
         routine_list = self._find(page, QListWidget, "routineList")
         routine_list.clear()
         for item in cast("list[dict[str, object]]", data["items"]):
-            text = (
-                f"{item['name']} · {item['targetMuscle']} · "
-                f"{item['duration']} · {item['intensity']}"
-            )
+            text = f"{item['name']} · {item['targetMuscle']} · {item['duration']} · {item['intensity']}"
             routine_list.addItem(QListWidgetItem(text))
 
     def _render_exercise(self) -> None:
@@ -301,10 +246,7 @@ QDoubleSpinBox::down-arrow {{
         for option in cast("list[str]", data["painOptions"]):
             check = page.findChild(QAbstractButton, f"pain{option}Check")
             if check is not None:
-                check.setChecked(
-                    BODY_PART_LABEL_TO_KEY[option]
-                    in cast("list[str]", data["painPoints"])
-                )
+                check.setChecked(BODY_PART_LABEL_TO_KEY[option] in cast("list[str]", data["painPoints"]))
 
     def _render_history(self) -> None:
         page = self._screens[HistoryState.screen_key]
@@ -317,9 +259,7 @@ QDoubleSpinBox::down-arrow {{
         rows = cast("list[dict[str, object]]", data["rows"])
         table.setRowCount(len(rows))
         table.setColumnCount(6)
-        table.setHorizontalHeaderLabels(
-            ["날짜", "동작", "시간", "강도", "통증", "메모"]
-        )
+        table.setHorizontalHeaderLabels(["날짜", "동작", "시간", "강도", "통증", "메모"])
         table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         table.setAlternatingRowColors(True)
         table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -327,9 +267,7 @@ QDoubleSpinBox::down-arrow {{
         table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         table.verticalHeader().setVisible(False)
         for row_index, row in enumerate(rows):
-            for column, key in enumerate(
-                ["date", "exerciseCount", "duration", "difficulty", "pain", "memo"]
-            ):
+            for column, key in enumerate(["date", "exerciseCount", "duration", "difficulty", "pain", "memo"]):
                 table.setItem(row_index, column, QTableWidgetItem(str(row[key])))
             table.setRowHeight(row_index, 42)
 
@@ -418,15 +356,9 @@ QDoubleSpinBox::down-arrow {{
         self._button_groups.append(group)
 
     def _buttons_by_prefix(self, parent: QWidget, prefix: str) -> list[QAbstractButton]:
-        return [
-            button
-            for button in parent.findChildren(QAbstractButton)
-            if button.objectName().startswith(prefix)
-        ]
+        return [button for button in parent.findChildren(QAbstractButton) if button.objectName().startswith(prefix)]
 
-    def _set_checked_button(
-        self, parent: QWidget, prefix: str, selected_text: str
-    ) -> None:
+    def _set_checked_button(self, parent: QWidget, prefix: str, selected_text: str) -> None:
         buttons = self._buttons_by_prefix(parent, prefix)
         if not buttons:
             return
@@ -451,9 +383,7 @@ QDoubleSpinBox::down-arrow {{
     def _fatigue_button_prefixes(self) -> dict[str, str]:
         return {key: prefix for _label, key, prefix in BODY_PARTS}
 
-    def _set_combo_items(
-        self, combo: QComboBox, options: list[str], current_text: str
-    ) -> None:
+    def _set_combo_items(self, combo: QComboBox, options: list[str], current_text: str) -> None:
         if [combo.itemText(i) for i in range(combo.count())] != options:
             combo.clear()
             combo.addItems(options)

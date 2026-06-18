@@ -49,9 +49,7 @@ class RoutineService:
         target_count = max(1, (available_min * 60) // _AVG_SEC_PER_EXERCISE)
         return candidates[:target_count]
 
-    def _avoid_parts(
-        self, profile: UserProfile | None, log: DailyLog | None
-    ) -> list[BodyPart]:
+    def _avoid_parts(self, profile: UserProfile | None, log: DailyLog | None) -> list[BodyPart]:
         avoid: set[BodyPart] = set()
         if profile and profile.pain_points:
             avoid.update(profile.pain_points)

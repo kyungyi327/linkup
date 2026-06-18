@@ -17,16 +17,12 @@ class DailyLogRepo:
 
     def get(self, date: str) -> DailyLog | None:
         with get_connection(self._db_path) as conn:
-            row = conn.execute(
-                "SELECT * FROM Daily_Log WHERE date = ?", (date,)
-            ).fetchone()
+            row = conn.execute("SELECT * FROM Daily_Log WHERE date = ?", (date,)).fetchone()
         return row_to_daily_log(row) if row else None
 
     def get_today(self) -> DailyLog | None:
         with get_connection(self._db_path) as conn:
-            row = conn.execute(
-                "SELECT * FROM Daily_Log WHERE date = date('now','localtime')"
-            ).fetchone()
+            row = conn.execute("SELECT * FROM Daily_Log WHERE date = date('now','localtime')").fetchone()
         return row_to_daily_log(row) if row else None
 
     def upsert(self, log: DailyLog) -> None:

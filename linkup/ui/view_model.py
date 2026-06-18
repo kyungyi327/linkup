@@ -57,9 +57,7 @@ class AppViewModel(QObject):
             "completionRate": f"{self._completion_rate(stats.workout_days_7d)}%",
             "conditionStatus": "보통" if condition_entered else "미입력",
             "conditionDetail": self._condition_detail(log),
-            "conditionButtonText": (
-                "컨디션 수정" if condition_entered else "컨디션 입력"
-            ),
+            "conditionButtonText": ("컨디션 수정" if condition_entered else "컨디션 입력"),
             "conditionEntered": condition_entered,
             "routineAvailableMin": 10,
         }
@@ -74,9 +72,7 @@ class AppViewModel(QObject):
                 "fatigueByPart": self._default_fatigue_by_part(),
             }
         return {
-            "mentalConditionScore": log.mental_condition_score
-            if log.mental_condition_score is not None
-            else 5,
+            "mentalConditionScore": log.mental_condition_score if log.mental_condition_score is not None else 5,
             "outdoorHours": str(log.outdoor_hours or 0),
             "fatigueByPart": log.fatigue_by_part,
         }
@@ -194,9 +190,7 @@ class AppViewModel(QObject):
         valid_part_keys = set(FATIGUE_PART_KEYS.values())
         self._provider.upsert_today_log(
             DailyLog(
-                mental_condition_score=max(
-                    0, min(MENTAL_CONDITION_MAX, mental_condition_score)
-                ),
+                mental_condition_score=max(0, min(MENTAL_CONDITION_MAX, mental_condition_score)),
                 outdoor_hours=outdoor_hours,
                 fatigue_by_part={
                     part_key: max(1, min(FATIGUE_MAX, value))
@@ -215,12 +209,8 @@ class AppViewModel(QObject):
         self._emit_changed()
 
     def complete_routine_load(self) -> None:
-        state = self._require_state(
-            RoutineLoadingState, "routine loading state is required"
-        )
-        self._machine.transition(
-            state.routine_loaded(self._provider.generate_routine(state.available_min))
-        )
+        state = self._require_state(RoutineLoadingState, "routine loading state is required")
+        self._machine.transition(state.routine_loaded(self._provider.generate_routine(state.available_min)))
         self._emit_changed()
 
     def open_routine(self) -> None:
@@ -251,18 +241,12 @@ class AppViewModel(QObject):
         self._emit_changed()
 
     def start_session(self) -> None:
-        state = self._require_state(
-            RoutinePreviewState, "routine preview state is required"
-        )
-        self._machine.transition(
-            state.start_session(self._provider.start_session(state.routine))
-        )
+        state = self._require_state(RoutinePreviewState, "routine preview state is required")
+        self._machine.transition(state.start_session(self._provider.start_session(state.routine)))
         self._emit_changed()
 
     def complete_current_exercise(self) -> None:
-        state = self._require_state(
-            ExerciseExecutionState, "exercise state is required"
-        )
+        state = self._require_state(ExerciseExecutionState, "exercise state is required")
         ex = state.current_exercise()
         self._provider.record_history(state.session_id, ex.ex_id, True)
         self._machine.transition(state.exercise_completed())
@@ -277,20 +261,14 @@ class AppViewModel(QObject):
         self._emit_changed()
 
     def request_modified_exercise(self) -> None:
-        state = self._require_state(
-            ExerciseExecutionState, "exercise state is required"
-        )
+        state = self._require_state(ExerciseExecutionState, "exercise state is required")
         ex = state.current_exercise()
-        self._machine.transition(
-            state.exercise_modified(self._provider.get_modified_exercise(ex.ex_id))
-        )
+        self._machine.transition(state.exercise_modified(self._provider.get_modified_exercise(ex.ex_id)))
         self._emit_changed()
 
     def finish_session(self, difficulty: str, pain: str, memo: str) -> None:
         state = self._require_state(SessionCompleteState, "complete state is required")
-        self._completion = self._provider.end_session(
-            state.session_id, difficulty, pain, memo
-        )
+        self._completion = self._provider.end_session(state.session_id, difficulty, pain, memo)
         self._machine.transition(state.finish())
         self._emit_changed()
 
@@ -308,9 +286,7 @@ class AppViewModel(QObject):
     ) -> None:
         current = self._current_or_default_profile()
         valid_part_keys = set(FATIGUE_PART_KEYS.values())
-        selected_pain_points = [
-            part_key for part_key in pain_points if part_key in valid_part_keys
-        ]
+        selected_pain_points = [part_key for part_key in pain_points if part_key in valid_part_keys]
         self._provider.save_user_profile(
             UserProfile(
                 nickname=nickname or current.nickname,
@@ -334,9 +310,7 @@ class AppViewModel(QObject):
     def _emit_changed(self) -> None:
         self.changed.emit()
 
-    def _require_state[StateT](
-        self, state_type: type[StateT], error_message: str
-    ) -> StateT:
+    def _require_state[StateT](self, state_type: type[StateT], error_message: str) -> StateT:
         state = self._machine.state
         if not isinstance(state, state_type):
             raise RuntimeError(error_message)
@@ -344,9 +318,7 @@ class AppViewModel(QObject):
 
     def _routine_from_state(self) -> Routine | None:
         state = self._machine.state
-        if isinstance(
-            state, RoutinePreviewState | ExerciseExecutionState | SessionCompleteState
-        ):
+        if isinstance(state, RoutinePreviewState | ExerciseExecutionState | SessionCompleteState):
             return state.routine
         return None
 

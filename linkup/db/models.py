@@ -52,9 +52,7 @@ class UserProfile:
     weekly_frequency: int | None = None  # INPUT.md 2-4, 1~7
 
     # Pain points
-    pain_points: list[BodyPart] = field(
-        default_factory=list
-    )  # INPUT.md 2-6 (CSV in DB)
+    pain_points: list[BodyPart] = field(default_factory=list)  # INPUT.md 2-6 (CSV in DB)
 
     # Fitness benchmarks (INPUT.md 2-7)
     # NULL means "잘 모르겠다 (I don't know)"

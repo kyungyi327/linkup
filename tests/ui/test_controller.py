@@ -21,9 +21,7 @@ def test_guide_markup_escapes_html_and_preserves_line_breaks() -> None:
 
     markup = controller._guide_markup("<b>주의</b>\n천천히")
 
-    assert markup == (
-        '<div style="line-height: 150%;">&lt;b&gt;주의&lt;/b&gt;<br>천천히</div>'
-    )
+    assert markup == ('<div style="line-height: 150%;">&lt;b&gt;주의&lt;/b&gt;<br>천천히</div>')
 
 
 def test_button_helpers_select_by_prefix_and_text(qapp: QApplication) -> None:
@@ -48,9 +46,7 @@ def test_button_helpers_select_by_prefix_and_text(qapp: QApplication) -> None:
     assert not first.isChecked()
     assert not unrelated.isChecked()
     assert controller._selected_button_text(parent, "option_", "fallback") == "2"
-    assert (
-        controller._selected_button_text(parent, "missing_", "fallback") == "fallback"
-    )
+    assert controller._selected_button_text(parent, "missing_", "fallback") == "fallback"
 
 
 def test_button_helper_defaults_to_first_button_when_text_is_missing(
