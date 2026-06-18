@@ -17,3 +17,8 @@ documents/*.md
 .qtcreator/*
 !.qtcreator/project.json
 .vscode/
+
+# SQLite local db (각자 init_db 로 생성)
+*.db
+*.db-wal
+*.db-shm
