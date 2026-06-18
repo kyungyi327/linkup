@@ -22,3 +22,7 @@ documents/*.md
 *.db
 *.db-wal
 *.db-shm
+
+# unit test / coverage reports
+.coverage
+htmlcov/

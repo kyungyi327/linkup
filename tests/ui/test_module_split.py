@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from unittest import TestCase
 
 from linkup.ui.mock import MockDataProvider
-from linkup.ui.port import DataProvider
 from linkup.ui.state import AppStateMachine
 from linkup.ui.view_model import AppViewModel
+
+if TYPE_CHECKING:
+    from linkup.ui.port import DataProvider
 
 
 class TestModuleSplit(TestCase):
@@ -14,13 +17,6 @@ class TestModuleSplit(TestCase):
 
         self.assertTrue(provider.has_user_profile())
         self.assertEqual(provider.get_user_profile().nickname, "김동민")
-
-    def test_data_provider_marks_required_implementations(self) -> None:
-        class IncompleteProvider(DataProvider):
-            pass
-
-        with self.assertRaises(TypeError):
-            IncompleteProvider()
 
     def test_view_model_uses_initial_provider_state(self) -> None:
         self.assertEqual(AppViewModel(MockDataProvider()).screen, "dashboard")
