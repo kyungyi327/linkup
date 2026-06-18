@@ -4,16 +4,27 @@
 
 - Python 3.13
 - `uv`가 필요합니다.
-- 앱 실행:
+
+### 초기화
 
 ```bash
-uv run main.py
+make init
 ```
 
-- Makefile을 사용할 수 있으면 다음 명령으로도 실행할 수 있습니다.
+### 앱 실행
 
 ```bash
 make run
+```
+
+### 개발 명령
+
+```bash
+make fix      # ruff 자동 수정 및 포맷 적용
+make check    # 포맷 검사, 린트, 테스트 실행
+make lint     # ruff lint 자동 수정
+make format   # ruff format 실행
+make test     # unittest 실행
 ```
 
 ## 구현 메모

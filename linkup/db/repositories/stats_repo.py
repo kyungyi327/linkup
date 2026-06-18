@@ -4,11 +4,12 @@ Workout_Session / Daily_Log 집계 통계 DAO (읽기 전용).
 """
 
 from dataclasses import dataclass
-from typing import List
+from pathlib import Path
 
 from linkup.db.models import WorkoutSession
-from .db import get_connection
+
 from ._mapper import row_to_session
+from .db import get_connection
 
 
 @dataclass
@@ -20,6 +21,7 @@ class RecentStats:
     total_chunks  : 기간 내 총 chunk 수
     total_minutes : 기간 내 총 운동 분
     """
+
     active_days: int
     streak_days: int
     total_chunks: int
@@ -29,14 +31,14 @@ class RecentStats:
 @dataclass
 class DailyHistorySummary:
     """History 화면 한 행 = 하루치."""
+
     date: str
     total_minutes: int
     chunk_count: int
 
 
 class StatsRepo:
-
-    def __init__(self, db_path=None):
+    def __init__(self, db_path: Path | None = None) -> None:
         self._db_path = db_path
 
     def recent_stats(self, days: int = 7) -> RecentStats:
@@ -59,7 +61,8 @@ class StatsRepo:
             total_minutes = row["total_sec"] // 60
 
             dates = [
-                r["date"] for r in conn.execute(
+                r["date"]
+                for r in conn.execute(
                     "SELECT DISTINCT date FROM Workout_Session ORDER BY date DESC"
                 ).fetchall()
             ]
@@ -71,12 +74,14 @@ class StatsRepo:
         )
 
     @staticmethod
-    def _streak(desc_dates: List[str]) -> int:
+    def _streak(desc_dates: list[str]) -> int:
         """오늘(또는 어제)부터 연속된 운동 일수.
 
         desc_dates 는 'YYYY-MM-DD' 내림차순. 오늘/어제 둘 다 없으면 0.
         """
-        from datetime import date as _date, timedelta
+        from datetime import date as _date
+        from datetime import timedelta
+
         have = set(desc_dates)
         today = _date.today()
         if today.isoformat() in have:
@@ -91,7 +96,7 @@ class StatsRepo:
             cursor -= timedelta(days=1)
         return streak
 
-    def daily_history(self, limit: int = 50) -> List[DailyHistorySummary]:
+    def daily_history(self, limit: int = 50) -> list[DailyHistorySummary]:
         """최근 운동한 날들 (최신순), 일별 집계."""
         with get_connection(self._db_path) as conn:
             rows = conn.execute(
@@ -127,7 +132,7 @@ class StatsRepo:
             ).fetchone()
         return row["total_sec"] // 60
 
-    def list_today_chunks(self, date: str) -> List[WorkoutSession]:
+    def list_today_chunks(self, date: str) -> list[WorkoutSession]:
         with get_connection(self._db_path) as conn:
             rows = conn.execute(
                 """

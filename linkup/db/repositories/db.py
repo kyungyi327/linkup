@@ -10,14 +10,13 @@ SQLite 연결 헬퍼.
 
 import sqlite3
 from pathlib import Path
-from typing import Optional
 
 # linkup/db/ 디렉터리 (schema/seed 파일 위치)
 _DB_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_DB_PATH = _DB_DIR / "linkup.db"
 
 
-def get_connection(db_path: Optional[Path] = None) -> sqlite3.Connection:
+def get_connection(db_path: Path | None = None) -> sqlite3.Connection:
     """설정이 적용된 SQLite 연결 반환. 호출 측에서 close 또는 with 사용."""
     path = Path(db_path) if db_path else DEFAULT_DB_PATH
     conn = sqlite3.connect(str(path))
@@ -27,7 +26,7 @@ def get_connection(db_path: Optional[Path] = None) -> sqlite3.Connection:
     return conn
 
 
-def init_db(db_path: Optional[Path] = None) -> None:
+def init_db(db_path: Path | None = None) -> None:
     """schema + triggers + schema_v2 + seed 를 순서대로 실행하여 DB 초기화.
 
     schema.sql / triggers 는 CREATE ... IF NOT EXISTS, seed 는 INSERT OR IGNORE

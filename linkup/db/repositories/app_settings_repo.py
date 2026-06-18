@@ -3,17 +3,16 @@ repositories/app_settings_repo.py
 App_Settings key-value 테이블 DAO.
 """
 
-from typing import Optional
+from pathlib import Path
 
 from .db import get_connection
 
 
 class AppSettingsRepo:
-
-    def __init__(self, db_path=None):
+    def __init__(self, db_path: Path | None = None) -> None:
         self._db_path = db_path
 
-    def get(self, key: str) -> Optional[str]:
+    def get(self, key: str) -> str | None:
         with get_connection(self._db_path) as conn:
             row = conn.execute(
                 "SELECT value FROM App_Settings WHERE key = ?", (key,)

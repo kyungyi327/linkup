@@ -1,28 +1,36 @@
 .PHONY: default
 default: run
 
+UV_RUN := uv run --locked
+
+.PHONY: init
+init:
+	$(UV_RUN) --no-sync python -c "from linkup.db.repositories.db import init_db; init_db()"
+	$(UV_RUN) --no-sync python -m linkup.db.tools.etl_fitteum
+
 .PHONY: run
 run:
-	uv run main.py
+	$(UV_RUN) main.py
 
 .PHONY: fix
 fix:
-	uv run ruff check --fix .
-	uv run ruff format .
+	$(UV_RUN) ruff check --fix .
+	$(UV_RUN) ruff format .
 
 .PHONY: check
 check:
-	uv run ruff format --check .
-	uv run ruff check .
+	$(UV_RUN) ruff format --check .
+	$(UV_RUN) ruff check .
+	$(MAKE) test
 
 .PHONY: lint
 lint:
-	uv run ruff check . --fix
-	
+	$(UV_RUN) ruff check . --fix
+
 .PHONY: format
 format:
-	uv run ruff format .
+	$(UV_RUN) ruff format .
 
 .PHONY: test
 test:
-	uv run python -m unittest discover -s tests
+	$(UV_RUN) python -m unittest discover -s tests

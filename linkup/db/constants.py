@@ -20,28 +20,28 @@ Usage:
         print(part.value, part.label_ko)
 """
 
-from enum import Enum
-from typing import List
+from enum import StrEnum
+from typing import Self
 
 
 # ------------------------------------------------------------------
 # Base class with common helpers
 # ------------------------------------------------------------------
-class LabeledEnum(str, Enum):
+class LabeledEnum(StrEnum):
     """Enum with a Korean label for UI rendering."""
 
-    def __new__(cls, value: str, label_ko: str = ""):
+    def __new__(cls, value: str, label_ko: str = "") -> Self:
         obj = str.__new__(cls, value)
         obj._value_ = value
         obj.label_ko = label_ko
         return obj
 
     @classmethod
-    def values(cls) -> List[str]:
+    def values(cls) -> list[str]:
         return [member.value for member in cls]
 
     @classmethod
-    def choices_ko(cls) -> List[tuple]:
+    def choices_ko(cls) -> list[tuple[str, str]]:
         """Returns [(value, korean_label), ...] for UI dropdowns."""
         return [(member.value, member.label_ko) for member in cls]
 
@@ -50,27 +50,27 @@ class LabeledEnum(str, Enum):
 # Body parts  (pain_points & contraindications & fatigue_by_part keys)
 # ------------------------------------------------------------------
 class BodyPart(LabeledEnum):
-    NECK       = ("neck",       "목")
-    SHOULDER   = ("shoulder",   "어깨")
+    NECK = ("neck", "목")
+    SHOULDER = ("shoulder", "어깨")
     UPPER_BACK = ("upper_back", "등 상부")
     LOWER_BACK = ("lower_back", "허리")
-    WRIST      = ("wrist",      "손목")
-    KNEE       = ("knee",       "무릎")
-    ANKLE      = ("ankle",      "발목")
-    HIP        = ("hip",        "고관절")
-    ELBOW      = ("elbow",      "팔꿈치")
-    EYE        = ("eye",        "눈")
+    WRIST = ("wrist", "손목")
+    KNEE = ("knee", "무릎")
+    ANKLE = ("ankle", "발목")
+    HIP = ("hip", "고관절")
+    ELBOW = ("elbow", "팔꿈치")
+    EYE = ("eye", "눈")
 
 
 # ------------------------------------------------------------------
 # Exercise categories
 # ------------------------------------------------------------------
 class ExerciseCategory(LabeledEnum):
-    STRETCH    = ("stretch",    "스트레칭")
-    STRENGTH   = ("strength",   "근력 강화")
-    CARDIO     = ("cardio",     "유산소")
+    STRETCH = ("stretch", "스트레칭")
+    STRENGTH = ("strength", "근력 강화")
+    CARDIO = ("cardio", "유산소")
     RELAXATION = ("relaxation", "이완/명상")
-    MOBILITY   = ("mobility",   "관절 가동성")
+    MOBILITY = ("mobility", "관절 가동성")
 
 
 # ------------------------------------------------------------------
@@ -78,14 +78,14 @@ class ExerciseCategory(LabeledEnum):
 # ------------------------------------------------------------------
 class Scene(LabeledEnum):
     OFFICE = ("office", "사무실")
-    HOME   = ("home",   "집")
+    HOME = ("home", "집")
 
 
 # ------------------------------------------------------------------
 # Gender  (User_Profile.gender)
 # ------------------------------------------------------------------
 class Gender(LabeledEnum):
-    MALE   = ("male",   "남")
+    MALE = ("male", "남")
     FEMALE = ("female", "여")
 
 
@@ -93,32 +93,32 @@ class Gender(LabeledEnum):
 # Job types
 # ------------------------------------------------------------------
 class JobType(LabeledEnum):
-    IT            = ("it",            "IT/개발")
+    IT = ("it", "IT/개발")
     OFFICE_WORKER = ("office_worker", "사무직")
-    STUDENT       = ("student",       "학생")
-    MANUAL_LABOR  = ("manual_labor",  "현장직/노동직")
-    OTHER         = ("other",         "기타")
+    STUDENT = ("student", "학생")
+    MANUAL_LABOR = ("manual_labor", "현장직/노동직")
+    OTHER = ("other", "기타")
 
 
 # ------------------------------------------------------------------
 # Goals  (User_Profile.goals, CSV, INPUT.md 2-2)
 # ------------------------------------------------------------------
 class Goal(LabeledEnum):
-    MUSCLE_GAIN   = ("muscle_gain",   "근육량 증가")
-    DIET          = ("diet",          "다이어트")
-    LIFESTYLE     = ("lifestyle",     "생활 습관 개선")
+    MUSCLE_GAIN = ("muscle_gain", "근육량 증가")
+    DIET = ("diet", "다이어트")
+    LIFESTYLE = ("lifestyle", "생활 습관 개선")
     BASIC_FITNESS = ("basic_fitness", "기초 체력 증가")
-    NONE          = ("none",          "없음")
+    NONE = ("none", "없음")
 
 
 # ------------------------------------------------------------------
 # Session status  (Workout_History.status, INPUT.md 5)
 # ------------------------------------------------------------------
 class SessionStatus(LabeledEnum):
-    PENDING   = ("pending",   "대기")
+    PENDING = ("pending", "대기")
     COMPLETED = ("completed", "완료")
-    SKIPPED   = ("skipped",   "건너뜀")
-    ABORTED   = ("aborted",   "중단됨")
+    SKIPPED = ("skipped", "건너뜀")
+    ABORTED = ("aborted", "중단됨")
 
 
 # ------------------------------------------------------------------
@@ -177,7 +177,7 @@ def validate_pain_points(csv_string: str) -> bool:
 
 
 def validate_goals(csv_string: str) -> bool:
-    """Validate that every item in a comma-separated goals string is a valid Goal value."""
+    """Validate comma-separated goals are valid Goal values."""
     if not csv_string or csv_string.strip() == "":
         return True
     parts = [p.strip() for p in csv_string.split(",") if p.strip()]
@@ -185,13 +185,13 @@ def validate_goals(csv_string: str) -> bool:
     return all(p in valid for p in parts)
 
 
-def parse_csv(csv_string: str) -> List[str]:
+def parse_csv(csv_string: str) -> list[str]:
     """Split a comma-separated TEXT field into a list."""
     if not csv_string or csv_string.strip() == "":
         return []
     return [item.strip() for item in csv_string.split(",") if item.strip()]
 
 
-def join_csv(items: List[str]) -> str:
+def join_csv(items: list[str]) -> str:
     """Inverse of parse_csv: join a list into a comma-separated string."""
     return ",".join(item for item in items if item)

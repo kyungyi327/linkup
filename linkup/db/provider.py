@@ -8,22 +8,26 @@ UI 는 port.py 의 DTO/메서드만 알고, 내부 DB 구조(Repo/models)는 모
 
 from __future__ import annotations
 
-from datetime import date as _date, datetime
+from datetime import date as _date
+from datetime import datetime
+from typing import TYPE_CHECKING
 
-from linkup.ui import port
+from linkup.db import constants as C
+from linkup.db import models
 from linkup.db.repositories import (
-    UserProfileRepo,
     DailyLogRepo,
-    WorkoutSessionRepo,
-    WorkoutHistoryRepo,
     ExerciseLibraryRepo,
     StatsRepo,
+    UserProfileRepo,
+    WorkoutHistoryRepo,
+    WorkoutSessionRepo,
     init_db,
 )
 from linkup.db.services.routine_service import RoutineService
-from linkup.db import models
-from linkup.db import constants as C
+from linkup.ui import port
 
+if TYPE_CHECKING:
+    from pathlib import Path
 
 # ------------------------------------------------------------------
 # 변환 헬퍼
@@ -48,7 +52,9 @@ def _duration_text(item: models.ExerciseLibraryItem) -> str:
     return f"{item.duration_sec}초{suffix}"
 
 
-def _exercise_to_port(item: models.ExerciseLibraryItem, guide: str = "") -> port.Exercise:
+def _exercise_to_port(
+    item: models.ExerciseLibraryItem, guide: str = ""
+) -> port.Exercise:
     return port.Exercise(
         ex_id=item.ex_id,
         name=item.name,
@@ -66,7 +72,7 @@ def _exercise_to_port(item: models.ExerciseLibraryItem, guide: str = "") -> port
 # Provider
 # ------------------------------------------------------------------
 class SqliteDataProvider(port.DataProvider):
-    def __init__(self, db_path=None, auto_init: bool = True) -> None:
+    def __init__(self, db_path: Path | None = None, auto_init: bool = True) -> None:
         self._db_path = db_path
         if auto_init:
             init_db(db_path)
@@ -108,8 +114,12 @@ class SqliteDataProvider(port.DataProvider):
             nickname=profile.nickname,
             birth_year=profile.birth_year,
             gender=C.Gender(profile.gender) if profile.gender else None,
-            height_cm=float(profile.height_cm) if profile.height_cm is not None else None,
-            weight_kg=float(profile.weight_kg) if profile.weight_kg is not None else None,
+            height_cm=float(profile.height_cm)
+            if profile.height_cm is not None
+            else None,
+            weight_kg=float(profile.weight_kg)
+            if profile.weight_kg is not None
+            else None,
             pain_points=[C.BodyPart(x) for x in profile.pain_points],
             pushup_max=profile.pushup_max,
             plank_max_sec=profile.plank_max_sec,
@@ -170,14 +180,16 @@ class SqliteDataProvider(port.DataProvider):
         # 일별 집계(GROUP BY date)라 세션 단위 난이도/통증/메모는 표현 불가 → 빈값
         out: list[port.SessionRecord] = []
         for d in self._stats.daily_history(50):
-            out.append(port.SessionRecord(
-                date=d.date,
-                exercise_count=d.chunk_count,
-                duration_min=d.total_minutes,
-                difficulty_feedback="",
-                pain_feedback="",
-                memo="",
-            ))
+            out.append(
+                port.SessionRecord(
+                    date=d.date,
+                    exercise_count=d.chunk_count,
+                    duration_min=d.total_minutes,
+                    difficulty_feedback="",
+                    pain_feedback="",
+                    memo="",
+                )
+            )
         return out
 
     # ---------- SessionRecordPort ----------
@@ -188,12 +200,14 @@ class SqliteDataProvider(port.DataProvider):
         sid = self._session.start(_today(), None, _now_hms())
         # routine 의 각 동작을 PENDING 으로 기록
         for i, ex in enumerate(routine.items, start=1):
-            self._history.create(models.WorkoutHistory(
-                session_id=sid,
-                ex_id=ex.ex_id,
-                seq_order=i,
-                status=C.SessionStatus.PENDING,
-            ))
+            self._history.create(
+                models.WorkoutHistory(
+                    session_id=sid,
+                    ex_id=ex.ex_id,
+                    seq_order=i,
+                    status=C.SessionStatus.PENDING,
+                )
+            )
         self._cur_session_id = sid
         self._cur_routine = routine
         return str(sid)
@@ -203,7 +217,10 @@ class SqliteDataProvider(port.DataProvider):
         rows = self._history.list_by_session(int(session_id))
         for h in rows:
             if h.ex_id == ex_id:
-                status = C.SessionStatus.COMPLETED if completed else C.SessionStatus.SKIPPED
+                status = (
+                    C.SessionStatus.COMPLETED if completed else C.SessionStatus.SKIPPED
+                )
+                assert h.history_id is not None
                 self._history.update_status(h.history_id, status)
                 break
 
