@@ -43,8 +43,8 @@ BODYPART_MAP = {
     "lower legs": "knee,ankle",
     "upper arms": "elbow",
     "lower arms": "wrist,elbow",
-    "chest": "",     # 딩정 enum 에 가슴 없음 → 회피대상 아님
-    "cardio": "",    # 전신, 특정 관절 무관
+    "chest": "",  # 딩정 enum 에 가슴 없음 → 회피대상 아님
+    "cardio": "",  # 전신, 특정 관절 무관
 }
 
 DURATION_BY_CAT = {"strength": 45, "stretch": 30, "cardio": 60}
@@ -80,22 +80,26 @@ def main() -> None:
         cat = map_category(r["category"])
         instr = (r["instructions"] or "").strip()
         steps = [s.strip() for s in instr.split(".") if s.strip()]
-        params.append((
-            f"LK_{int(r['ex_id']):04d}",          # ex_id
-            r["name"],                              # name
-            cat,                                    # category
-            r["bodyPart"] or "unknown",             # target_muscle (NOT NULL)
-            int(r["difficulty_level"]),             # difficulty_level
-            map_contraindications(r["bodyPart"]),   # contraindications
-            None,                                   # modified_ex_id
-            "office,home",                          # suitable_scenes
-            1,                                      # default_sets
-            1,                                      # default_reps
-            DURATION_BY_CAT.get(cat, 30),           # duration_sec
-            instr or None,                          # description
-            json.dumps(steps, ensure_ascii=False) if steps else None,  # instruction_steps
-            None,                                   # media_path
-        ))
+        params.append(
+            (
+                f"LK_{int(r['ex_id']):04d}",  # ex_id
+                r["name"],  # name
+                cat,  # category
+                r["bodyPart"] or "unknown",  # target_muscle (NOT NULL)
+                int(r["difficulty_level"]),  # difficulty_level
+                map_contraindications(r["bodyPart"]),  # contraindications
+                None,  # modified_ex_id
+                "office,home",  # suitable_scenes
+                1,  # default_sets
+                1,  # default_reps
+                DURATION_BY_CAT.get(cat, 30),  # duration_sec
+                instr or None,  # description
+                json.dumps(steps, ensure_ascii=False)
+                if steps
+                else None,  # instruction_steps
+                None,  # media_path
+            )
+        )
 
     cur = dst.executemany(
         """

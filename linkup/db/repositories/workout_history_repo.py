@@ -3,17 +3,17 @@ repositories/workout_history_repo.py
 Workout_History 테이블 DAO. 세션 내 동작별 1행.
 """
 
-from typing import Optional, List
+from pathlib import Path
 
+from linkup.db.constants import BodyPart, SessionStatus
 from linkup.db.models import WorkoutHistory
-from linkup.db.constants import SessionStatus, BodyPart
+
+from ._mapper import enum_csv, row_to_history
 from .db import get_connection
-from ._mapper import row_to_history, _enum_csv
 
 
 class WorkoutHistoryRepo:
-
-    def __init__(self, db_path=None):
+    def __init__(self, db_path: Path | None = None) -> None:
         self._db_path = db_path
 
     def create(self, history: WorkoutHistory) -> int:
@@ -28,10 +28,15 @@ class WorkoutHistoryRepo:
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
-                    history.session_id, history.ex_id, history.seq_order,
-                    history.actual_sets, history.actual_duration_sec,
-                    is_completed, 1 if history.used_modified else 0,
-                    history.feedback, _enum_csv(history.pain_during),
+                    history.session_id,
+                    history.ex_id,
+                    history.seq_order,
+                    history.actual_sets,
+                    history.actual_duration_sec,
+                    is_completed,
+                    1 if history.used_modified else 0,
+                    history.feedback,
+                    enum_csv(history.pain_during),
                     history.status.value,
                 ),
             )
@@ -39,18 +44,19 @@ class WorkoutHistoryRepo:
             assert cur.lastrowid is not None  # INSERT 직후라 항상 존재
             return cur.lastrowid
 
-    def update_status(self,
-                      history_id: int,
-                      status: SessionStatus,
-                      feedback: Optional[int] = None,
-                      pain_during: Optional[List[BodyPart]] = None,
-                      actual_sets: Optional[int] = None,
-                      actual_duration_sec: Optional[int] = None,
-                      used_modified: Optional[bool] = None) -> None:
+    def update_status(
+        self,
+        history_id: int,
+        status: SessionStatus,
+        feedback: int | None = None,
+        pain_during: list[BodyPart] | None = None,
+        actual_sets: int | None = None,
+        actual_duration_sec: int | None = None,
+        used_modified: bool | None = None,
+    ) -> None:
         """동작 상태 갱신. None 인 인자는 기존 값 유지."""
-        sets_clauses = ["status = :status",
-                        "is_completed = :is_completed"]
-        params = {
+        sets_clauses = ["status = :status", "is_completed = :is_completed"]
+        params: dict[str, object] = {
             "history_id": history_id,
             "status": status.value,
             "is_completed": 1 if status == SessionStatus.COMPLETED else 0,
@@ -60,7 +66,7 @@ class WorkoutHistoryRepo:
             params["feedback"] = feedback
         if pain_during is not None:
             sets_clauses.append("pain_during = :pain_during")
-            params["pain_during"] = _enum_csv(pain_during)
+            params["pain_during"] = enum_csv(pain_during)
         if actual_sets is not None:
             sets_clauses.append("actual_sets = :actual_sets")
             params["actual_sets"] = actual_sets
@@ -80,7 +86,7 @@ class WorkoutHistoryRepo:
             conn.execute(sql, params)
             conn.commit()
 
-    def list_by_session(self, session_id: int) -> List[WorkoutHistory]:
+    def list_by_session(self, session_id: int) -> list[WorkoutHistory]:
         with get_connection(self._db_path) as conn:
             rows = conn.execute(
                 """
