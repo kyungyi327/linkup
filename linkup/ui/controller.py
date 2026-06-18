@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from contextlib import ExitStack
+from html import escape
 from importlib.resources import as_file
 from typing import TYPE_CHECKING, cast
 
-from PySide6.QtCore import QObject, QTimer
+from PySide6.QtCore import QObject, Qt, QTimer
 from PySide6.QtWidgets import (
     QAbstractButton,
     QAbstractItemView,
@@ -84,6 +85,7 @@ class AppWindowController(QObject):
             ),
             HistoryState.screen_key: self._add_screen("History.ui", "historyPage"),
         }
+        self._apply_stylesheet()
         self._apply_spinbox_arrow_stylesheet()
         self._button_groups: list[QButtonGroup] = []
         self._configure_option_groups()
@@ -111,6 +113,9 @@ QDoubleSpinBox::down-arrow {{
 }}
 """
         )
+
+    def _apply_stylesheet(self) -> None:
+        self.window.setStyleSheet((ASSET_FILES / "app.qss").read_text("utf-8"))
 
     def _asset_url(self, name: str) -> str:
         asset_path = self._resource_stack.enter_context(as_file(ASSET_FILES / name))
@@ -259,7 +264,9 @@ QDoubleSpinBox::down-arrow {{
         progress.setMaximum(int(data["progressMax"]))
         progress.setValue(int(data["progressValue"]))
         self._label(page, "titleLabel").setText(str(data["title"]))
-        self._label(page, "guideLabel").setText(str(data["guide"]))
+        guide_label = self._label(page, "guideLabel")
+        guide_label.setTextFormat(Qt.TextFormat.RichText)
+        guide_label.setText(self._guide_markup(str(data["guide"])))
         self._label(page, "remainingLabel").setText(str(data["remainingText"]))
 
     def _render_complete(self) -> None:
@@ -362,6 +369,10 @@ QDoubleSpinBox::down-arrow {{
             if check is not None and check.isChecked():
                 selected.append(BODY_PART_LABEL_TO_KEY[option])
         return selected or ["neck", "shoulder"]
+
+    def _guide_markup(self, text: str) -> str:
+        guide = escape(text).replace("\n", "<br>")
+        return f'<div style="line-height: 150%;">{guide}</div>'
 
     def _label(self, parent: QWidget, name: str) -> QLabel:
         return self._find(parent, QLabel, name)

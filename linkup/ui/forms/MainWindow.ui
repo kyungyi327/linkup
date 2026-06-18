@@ -17,46 +17,6 @@
    </size>
   </property>
   <property name="windowTitle"><string>핏틈</string></property>
-  <property name="styleSheet">
-   <string notr="true">
-QMainWindow, QWidget { background: #f7f6f2; color: #18201c; font-family: Segoe UI; font-size: 15px; }
-QFrame#cardFrame { background: #ffffff; border: 1px solid #e3e0d8; border-radius: 8px; }
-QFrame#actionBarFrame { background: transparent; border: none; }
-QLabel { background: transparent; border: none; }
-QFrame#cardFrame QLabel { background: transparent; border: none; }
-QLabel#titleLabel, QLabel#greetingLabel { font-size: 30px; font-weight: 700; }
-QLabel#brandLabel { color: #2f6f4e; font-weight: 700; font-size: 18px; }
-QLabel#sectionLabel { color: #18201c; font-size: 17px; font-weight: 700; }
-QLabel#metricValueLabel, QLabel[role="metric"] { color: #18201c; font-size: 24px; font-weight: 700; }
-QLabel#mutedLabel, QLabel[role="muted"] { color: #667066; }
-QFrame#imagePlaceholderFrame { background: #f4f2ec; border: 1px dashed #b9b4a9; border-radius: 8px; }
-QLabel#exerciseImagePlaceholder { color: #667066; font-weight: 700; }
-QPushButton { min-height: 36px; background: #ffffff; border: 1px solid #d8d4ca; border-radius: 8px; padding: 10px 16px; }
-QPushButton:hover { border-color: #2f6f4e; background: #fbfdf9; }
-QPushButton:pressed { background: #eef4ed; }
-QPushButton#startWorkoutButton, QPushButton#saveButton, QPushButton#startButton, QPushButton#nextButton { background: #2f6f4e; color: white; border-color: #2f6f4e; font-weight: 700; }
-QPushButton#startWorkoutButton:hover, QPushButton#saveButton:hover, QPushButton#startButton:hover, QPushButton#nextButton:hover { background: #245c3f; border-color: #245c3f; }
-QPushButton#startWorkoutButton:pressed, QPushButton#saveButton:pressed, QPushButton#startButton:pressed, QPushButton#nextButton:pressed { background: #1d4933; border-color: #1d4933; }
-QPushButton#historyButton, QPushButton#conditionButton, QPushButton#profileButton { background: transparent; color: #374038; border-color: #cfc9bd; font-weight: 600; }
-QPushButton#historyButton:hover, QPushButton#conditionButton:hover, QPushButton#profileButton:hover { background: #eef4ed; border-color: #2f6f4e; }
-QPushButton[chip="true"] { min-height: 32px; background: #f7f6f2; border: 1px solid #d8d4ca; border-radius: 8px; padding: 8px 12px; color: #374038; font-weight: 500; }
-QPushButton[compactChip="true"] { min-width: 32px; max-width: 44px; padding: 6px 8px; font-weight: 500; }
-QPushButton[chip="true"]:hover { background: #fbfdf9; border-color: #2f6f4e; }
-QPushButton[chip="true"]:checked { background: #2f6f4e; border-color: #2f6f4e; color: #ffffff; }
-QPushButton[chip="true"]:pressed { background: #245c3f; border-color: #245c3f; color: #ffffff; }
-QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox, QTextEdit { min-height: 34px; background: #ffffff; border: 1px solid #d8d4ca; border-radius: 8px; padding: 8px; selection-background-color: #2f6f4e; }
-QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus, QTextEdit:focus { border-color: #2f6f4e; }
-QSpinBox, QDoubleSpinBox { padding-right: 30px; }
-QSpinBox::up-button, QDoubleSpinBox::up-button { subcontrol-origin: border; subcontrol-position: top right; width: 26px; background: #f1efe8; border-left: 1px solid #d8d4ca; border-bottom: 1px solid #d8d4ca; border-top-right-radius: 7px; }
-QSpinBox::down-button, QDoubleSpinBox::down-button { subcontrol-origin: border; subcontrol-position: bottom right; width: 26px; background: #f1efe8; border-left: 1px solid #d8d4ca; border-bottom-right-radius: 7px; }
-QSpinBox::up-button:hover, QSpinBox::down-button:hover, QDoubleSpinBox::up-button:hover, QDoubleSpinBox::down-button:hover { background: #e5efe4; border-left-color: #2f6f4e; }
-QSpinBox::up-button:pressed, QSpinBox::down-button:pressed, QDoubleSpinBox::up-button:pressed, QDoubleSpinBox::down-button:pressed { background: #d8e7d7; }
-QListWidget, QTableWidget { background: #ffffff; alternate-background-color: #fbfaf7; border: 1px solid #e3e0d8; border-radius: 8px; padding: 6px; selection-background-color: #dcebdd; selection-color: #18201c; }
-QHeaderView::section { background: #f1efe8; color: #667066; border: 0px; padding: 8px; font-weight: 700; }
-QProgressBar { border: 1px solid #d8d4ca; border-radius: 5px; background: #ffffff; height: 10px; }
-QProgressBar::chunk { background: #2f6f4e; border-radius: 5px; }
-   </string>
-  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="mainLayout">
     <property name="contentsMargins"><number>0</number><number>0</number><number>0</number><number>0</number></property>
