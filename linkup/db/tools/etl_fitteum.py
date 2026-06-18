@@ -94,9 +94,7 @@ def main() -> None:
                 1,  # default_reps
                 DURATION_BY_CAT.get(cat, 30),  # duration_sec
                 instr or None,  # description
-                json.dumps(steps, ensure_ascii=False)
-                if steps
-                else None,  # instruction_steps
+                json.dumps(steps, ensure_ascii=False) if steps else None,  # instruction_steps
                 None,  # media_path
             )
         )
@@ -114,9 +112,7 @@ def main() -> None:
     dst.commit()
 
     total = dst.execute("SELECT COUNT(*) FROM Exercise_Library").fetchone()[0]
-    lk = dst.execute(
-        "SELECT COUNT(*) FROM Exercise_Library WHERE ex_id LIKE 'LK_%'"
-    ).fetchone()[0]
+    lk = dst.execute("SELECT COUNT(*) FROM Exercise_Library WHERE ex_id LIKE 'LK_%'").fetchone()[0]
     print(f"입력 325행 처리 / 삽입 시도 {cur.rowcount}행")
     print(f"Exercise_Library 총 {total}행 (LK_* {lk}행)")
     if unmapped_parts:

@@ -108,9 +108,7 @@ class MockDataProvider(DataProvider):
         return self._routine
 
     def get_recent_stats(self) -> RecentStats:
-        return RecentStats(
-            streak_days=8, workout_days_7d=6, total_sessions=24, total_hours=5.2
-        )
+        return RecentStats(streak_days=8, workout_days_7d=6, total_sessions=24, total_hours=5.2)
 
     def get_session_list(self) -> list[SessionRecord]:
         return list(self._session_records)
@@ -122,14 +120,8 @@ class MockDataProvider(DataProvider):
     def record_history(self, session_id: str, ex_id: str, completed: bool) -> None:
         self.history_events.append((session_id, ex_id, completed))
 
-    def end_session(
-        self, session_id: str, difficulty: str, pain: str, memo: str
-    ) -> SessionSummary:
-        latest = SessionRecord(
-            "05/17 (오늘)", len(self._routine.items), 11, difficulty, pain, memo
-        )
+    def end_session(self, session_id: str, difficulty: str, pain: str, memo: str) -> SessionSummary:
+        latest = SessionRecord("05/17 (오늘)", len(self._routine.items), 11, difficulty, pain, memo)
         if self._session_records:
             self._session_records[0] = latest
-        return SessionSummary(
-            duration_min=11, completed_count=len(self._routine.items), streak_days=8
-        )
+        return SessionSummary(duration_min=11, completed_count=len(self._routine.items), streak_days=8)

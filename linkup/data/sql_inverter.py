@@ -27,10 +27,7 @@ def import_csv_to_sqlite() -> None:
 
     try:
         df.to_sql(name=table_name, con=conn, if_exists="replace", index=False)
-        message = (
-            f"✨ [성공] 총 {len(df)}개의 맨몸 운동 데이터가 SQLite DB에 "
-            "정상적으로 적재되었습니다."
-        )
+        message = f"✨ [성공] 총 {len(df)}개의 맨몸 운동 데이터가 SQLite DB에 정상적으로 적재되었습니다."
         print(message)
 
     except Exception as e:

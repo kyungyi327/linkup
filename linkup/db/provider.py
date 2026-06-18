@@ -52,15 +52,11 @@ def _duration_text(item: models.ExerciseLibraryItem) -> str:
     return f"{item.duration_sec}초{suffix}"
 
 
-def _exercise_to_port(
-    item: models.ExerciseLibraryItem, guide: str = ""
-) -> port.Exercise:
+def _exercise_to_port(item: models.ExerciseLibraryItem, guide: str = "") -> port.Exercise:
     return port.Exercise(
         ex_id=item.ex_id,
         name=item.name,
-        target_muscle=", ".join(
-            C.TARGET_MUSCLE_LABELS_KO.get(m, m) for m in item.target_muscle
-        ),
+        target_muscle=", ".join(C.TARGET_MUSCLE_LABELS_KO.get(m, m) for m in item.target_muscle),
         duration_text=_duration_text(item),
         intensity=_DIFF_TO_INTENSITY.get(item.difficulty_level, "보통"),
         guide=guide or (item.description or ""),
@@ -114,12 +110,8 @@ class SqliteDataProvider(port.DataProvider):
             nickname=profile.nickname,
             birth_year=profile.birth_year,
             gender=C.Gender(profile.gender) if profile.gender else None,
-            height_cm=float(profile.height_cm)
-            if profile.height_cm is not None
-            else None,
-            weight_kg=float(profile.weight_kg)
-            if profile.weight_kg is not None
-            else None,
+            height_cm=float(profile.height_cm) if profile.height_cm is not None else None,
+            weight_kg=float(profile.weight_kg) if profile.weight_kg is not None else None,
             pain_points=[C.BodyPart(x) for x in profile.pain_points],
             pushup_max=profile.pushup_max,
             plank_max_sec=profile.plank_max_sec,
@@ -217,16 +209,12 @@ class SqliteDataProvider(port.DataProvider):
         rows = self._history.list_by_session(int(session_id))
         for h in rows:
             if h.ex_id == ex_id:
-                status = (
-                    C.SessionStatus.COMPLETED if completed else C.SessionStatus.SKIPPED
-                )
+                status = C.SessionStatus.COMPLETED if completed else C.SessionStatus.SKIPPED
                 assert h.history_id is not None
                 self._history.update_status(h.history_id, status)
                 break
 
-    def end_session(
-        self, session_id: str, difficulty: str, pain: str, memo: str
-    ) -> port.SessionSummary:
+    def end_session(self, session_id: str, difficulty: str, pain: str, memo: str) -> port.SessionSummary:
         sid = int(session_id)
         # UI 난이도 라벨 (view_model: 쉬웠어요/적당해요/힘들었어요) → 피드백 점수
         fb = {"힘들었어요": -1, "적당해요": 0, "쉬웠어요": 1}.get(difficulty)

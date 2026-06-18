@@ -77,11 +77,7 @@ class WorkoutHistoryRepo:
             sets_clauses.append("used_modified = :used_modified")
             params["used_modified"] = 1 if used_modified else 0
 
-        sql = (
-            "UPDATE Workout_History SET "
-            + ", ".join(sets_clauses)
-            + " WHERE history_id = :history_id"
-        )
+        sql = "UPDATE Workout_History SET " + ", ".join(sets_clauses) + " WHERE history_id = :history_id"
         with get_connection(self._db_path) as conn:
             conn.execute(sql, params)
             conn.commit()

@@ -148,10 +148,7 @@ def row_to_daily_log(r: Row) -> DailyLog:
 
 
 def daily_log_to_params(log: DailyLog) -> dict[str, object]:
-    fatigue = {
-        (k.value if isinstance(k, BodyPart) else k): v
-        for k, v in (log.fatigue_by_part or {}).items()
-    }
+    fatigue = {(k.value if isinstance(k, BodyPart) else k): v for k, v in (log.fatigue_by_part or {}).items()}
     return {
         "date": log.date,
         "mental_condition_score": log.mental_condition_score,

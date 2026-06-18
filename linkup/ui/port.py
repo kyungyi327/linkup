@@ -116,9 +116,7 @@ class SessionRecordPort(Protocol):
     def record_history(self, session_id: str, ex_id: str, completed: bool) -> None: ...
 
     @abstractmethod
-    def end_session(
-        self, session_id: str, difficulty: str, pain: str, memo: str
-    ) -> SessionSummary: ...
+    def end_session(self, session_id: str, difficulty: str, pain: str, memo: str) -> SessionSummary: ...
 
 
 class DataProvider(

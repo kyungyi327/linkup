@@ -14,9 +14,7 @@ class AppSettingsRepo:
 
     def get(self, key: str) -> str | None:
         with get_connection(self._db_path) as conn:
-            row = conn.execute(
-                "SELECT value FROM App_Settings WHERE key = ?", (key,)
-            ).fetchone()
+            row = conn.execute("SELECT value FROM App_Settings WHERE key = ?", (key,)).fetchone()
         return row["value"] if row else None
 
     def set(self, key: str, value: str) -> None:

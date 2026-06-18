@@ -18,9 +18,7 @@ class UserProfileRepo:
     def has_profile(self) -> bool:
         """id=1 행이 있고 nickname 이 채워져 있으면 작성 완료로 본다."""
         with get_connection(self._db_path) as conn:
-            row = conn.execute(
-                "SELECT nickname FROM User_Profile WHERE id = 1"
-            ).fetchone()
+            row = conn.execute("SELECT nickname FROM User_Profile WHERE id = 1").fetchone()
         return row is not None and row["nickname"] is not None
 
     def get(self) -> UserProfile | None:
