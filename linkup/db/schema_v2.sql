@@ -3,8 +3,8 @@
 -- Team LinkUp — DB Schema Migration v1 → v2
 -- Engine   : SQLite 3.35+ (DROP COLUMN support required)
 -- Encoding : UTF-8
--- Status   : PLANNED — NOT EXECUTED
--- Apply    : sqlite3 linkup.db < schema_v2.sql   (백업 후)
+-- Status   : init_db() 가 자동 적용 (gender 컬럼 유무로 idempotent 판단)
+-- Apply    : init_db() 호출 시 적용. 수동 적용은 sqlite3 linkup.db < schema_v2.sql
 -- Rollback : restore DB file backup
 -- ============================================================
 
@@ -21,7 +21,7 @@ BEGIN TRANSACTION;
 -- Dropped: fitness_level (1~5 self-rating) → replaced by 3 raw counts (INPUT.md 2-7)
 ALTER TABLE User_Profile DROP COLUMN fitness_level;
 
--- Dropped (5/17 회의): preferred_duration_min → replaced by chunk-based fields below
+-- Dropped (회의 결정): preferred_duration_min → replaced by chunk-based fields below
 ALTER TABLE User_Profile DROP COLUMN preferred_duration_min;
 
 -- Dropped (정리): daily_step_goal — 앱이 걸음 수를 추적하지 않음 (불필요한 v1 잔재)

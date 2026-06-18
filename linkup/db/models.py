@@ -13,8 +13,6 @@ Naming convention:
 
 CSV / JSON fields are represented as Python lists / dicts here;
 DAO is responsible for serializing them to TEXT on save.
-
-See docs/CHANGELOG_KOR.md for change history.
 """
 
 from dataclasses import dataclass, field
